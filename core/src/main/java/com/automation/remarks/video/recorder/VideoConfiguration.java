@@ -16,59 +16,63 @@ import java.io.File;
  * Created by sergey on 4/13/16.
  */
 @LoadPolicy(LoadType.MERGE)
-@Sources({ "classpath:video.properties",
-           "classpath:ffmpeg-${os.type}.properties" })
+@Sources({"classpath:video.properties",
+        "classpath:ffmpeg-${os.type}.properties"})
 public interface VideoConfiguration extends Config {
 
-  @Key("video.folder")
-  default String folder() {
-    final String defaultFolder = System.getProperty("user.dir") + File.separator + "video";
-    return System.getProperty("video.folder", defaultFolder);
-  }
+    @Key("video.folder")
+    String folder();
 
-  @Key("video.enabled")
-  @DefaultValue("true")
-  Boolean videoEnabled();
+    static String defaultFolder() {
+        final String defaultFolder = System.getProperty("user.dir") + File.separator + "video";
+        return System.getProperty("video.folder", defaultFolder);
+    }
 
-  @Key("video.mode")
-  @DefaultValue("ANNOTATED")
-  RecordingMode mode();
+    @Key("video.enabled")
+    @DefaultValue("true")
+    Boolean videoEnabled();
 
-  @DefaultValue("http://localhost:4444")
-  @Key("remote.video.hub")
-  String remoteUrl();
+    @Key("video.mode")
+    @DefaultValue("ANNOTATED")
+    RecordingMode mode();
 
-  @DefaultValue("false")
-  @Key("video.remote")
-  Boolean isRemote();
+    @DefaultValue("http://localhost:4444")
+    @Key("remote.video.hub")
+    String remoteUrl();
 
-  @Key("video.name")
-  String fileName();
+    @DefaultValue("false")
+    @Key("video.remote")
+    Boolean isRemote();
 
-  @Key("recorder.type")
-  @DefaultValue("MONTE")
-  RecorderType recorderType();
+    @Key("video.name")
+    String fileName();
 
-  @Key("video.save.mode")
-  @DefaultValue("FAILED_ONLY")
-  VideoSaveMode saveMode();
+    @Key("recorder.type")
+    @DefaultValue("MONTE")
+    RecorderType recorderType();
 
-  @DefaultValue("24")
-  @Key("video.frame.rate")
-  int frameRate();
+    @Key("video.save.mode")
+    @DefaultValue("FAILED_ONLY")
+    VideoSaveMode saveMode();
 
-  @Key("video.screen.size")
-  default Dimension screenSize() {
-    return SystemUtils.getSystemScreenDimension();
-  }
+    @DefaultValue("24")
+    @Key("video.frame.rate")
+    int frameRate();
 
-  @Key("ffmpeg.format")
-  String ffmpegFormat();
+    @Key("video.screen.size")
+    Dimension screenSize();
 
-  @Key("ffmpeg.display")
-  String ffmpegDisplay();
+    static Dimension defaultScreenSize() {
+        return SystemUtils.getSystemScreenDimension();
+    }
 
-  @DefaultValue("yuv420p")
-  @Key("ffmpeg.pixelFormat")
-  String ffmpegPixelFormat();
+    @Key("ffmpeg.format")
+    String ffmpegFormat();
+
+    @Key("ffmpeg.display")
+    String ffmpegDisplay();
+
+    @DefaultValue("yuv420p")
+    @Key("ffmpeg.pixelFormat")
+    String ffmpegPixelFormat();
 }

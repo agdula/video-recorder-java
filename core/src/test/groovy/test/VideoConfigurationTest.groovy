@@ -20,7 +20,7 @@ class VideoConfigurationTest extends SpockBaseTest {
         def conf = VideoRecorder.conf()
 
         then:
-        conf.folder() == System.getProperty("user.dir") + "/video"
+        normalize(conf.folder()) == normalize(System.getProperty("user.dir")+ "/video")
         conf.frameRate() == 24
         conf.mode() == RecordingMode.ANNOTATED
         conf.recorderType() == RecorderType.MONTE
@@ -29,5 +29,9 @@ class VideoConfigurationTest extends SpockBaseTest {
         conf.screenSize() == SystemUtils.systemScreenDimension
         !conf.isRemote()
         conf.fileName() == null
+    }
+
+    def normalize(String s) {
+        return new File(s).absolutePath
     }
 }
