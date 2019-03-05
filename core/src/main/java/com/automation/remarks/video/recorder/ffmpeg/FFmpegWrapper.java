@@ -89,6 +89,13 @@ public class FFmpegWrapper {
 
     private String getScreenSize() {
         Dimension dimension = conf().screenSize();
-        return dimension.width + "x" + dimension.height;
+        return trimToEvenNumber(dimension.width) + "x" + trimToEvenNumber(dimension.height);
+    }
+
+    /**
+     * ffmpeg crashes if screen dimensions aren't even numbers, this can happen on VMs.
+     */
+    private static int trimToEvenNumber(int number) {
+        return (number % 2 == 0) ? number : (number - 1);
     }
 }
