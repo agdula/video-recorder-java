@@ -2,10 +2,11 @@ package com.automation.remarks.video.recorder.ffmpeg;
 
 import com.automation.remarks.video.exception.RecordingException;
 import com.automation.remarks.video.recorder.VideoRecorder;
-import org.awaitility.constraint.WaitConstraint;
+import org.apache.log4j.Logger;
 import org.awaitility.core.ConditionTimeoutException;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
@@ -15,7 +16,12 @@ import static org.awaitility.Awaitility.await;
  */
 public abstract class FFMpegRecorder extends VideoRecorder {
 
+    private static final int VIDEO_PROCESSING_TIMEOUT = 30;
+    private static final int VIDEO_PROCESSING_POLL_DELAY = 1;
+
     private FFmpegWrapper ffmpegWrapper;
+
+    private static final Logger log = Logger.getLogger(FFMpegRecorder.class);
 
     public FFMpegRecorder() {
         this.ffmpegWrapper = new FFmpegWrapper();
@@ -34,11 +40,20 @@ public abstract class FFMpegRecorder extends VideoRecorder {
     }
 
     private void waitForVideoCompleted(File video) {
+        log.info(MessageFormat.format(
+                "Waiting for completion of video processing, file {0} ... ",
+                video.getName()
+        ));
+
         try {
-            await().atMost(5, TimeUnit.SECONDS)
-                    .pollDelay(1, TimeUnit.SECONDS)
+            await().atMost(VIDEO_PROCESSING_TIMEOUT, TimeUnit.SECONDS)
+                    .pollDelay(VIDEO_PROCESSING_POLL_DELAY, TimeUnit.SECONDS)
                     .ignoreExceptions()
-                    .until(video::exists);
+                    .until(() -> {
+                        boolean exists = video.exists();
+                        log.info(exists ? "Video created." : "Video not yet there...");
+                        return exists;
+                    });
         } catch (ConditionTimeoutException ex) {
             throw new RecordingException(ex.getMessage());
         }
