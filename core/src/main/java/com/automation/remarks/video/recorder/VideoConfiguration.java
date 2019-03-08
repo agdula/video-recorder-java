@@ -55,7 +55,7 @@ public interface VideoConfiguration extends Config {
     @DefaultValue("FAILED_ONLY")
     VideoSaveMode saveMode();
 
-    @DefaultValue("24")
+    @DefaultValue("5")
     @Key("video.frame.rate")
     int frameRate();
 
