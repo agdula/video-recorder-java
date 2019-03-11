@@ -24,7 +24,7 @@ public class FFmpegWrapper {
 
     public static final String RECORDING_TOOL = "ffmpeg";
     private static final String TEM_FILE_NAME = "temporary";
-    private static final String EXTENSION = ".mp4";
+    private static final String EXTENSION = ".mkv";
     private CompletableFuture<String> future;
     private File temporaryFile;
 
