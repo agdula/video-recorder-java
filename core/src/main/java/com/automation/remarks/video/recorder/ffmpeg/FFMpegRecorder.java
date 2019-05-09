@@ -2,8 +2,9 @@ package com.automation.remarks.video.recorder.ffmpeg;
 
 import com.automation.remarks.video.exception.RecordingException;
 import com.automation.remarks.video.recorder.VideoRecorder;
-import org.apache.log4j.Logger;
 import org.awaitility.core.ConditionTimeoutException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -21,7 +22,7 @@ public abstract class FFMpegRecorder extends VideoRecorder {
 
     private FFmpegWrapper ffmpegWrapper;
 
-    private static final Logger log = Logger.getLogger(FFMpegRecorder.class);
+    private static final Logger log = LoggerFactory.getLogger(FFMpegRecorder.class);
 
     public FFMpegRecorder() {
         this.ffmpegWrapper = new FFmpegWrapper();
